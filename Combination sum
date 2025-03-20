@@ -1,0 +1,41 @@
+import java.util.*;
+public class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>>[] dp = new List[target + 1];
+        for (int i = 0; i <= target; i++) {
+            dp[i] = new ArrayList<>();
+        }
+        dp[0].add(new ArrayList<>());
+        Arrays.sort(candidates);
+        for (int i = 1; i <= target; i++) {
+            for (int num : candidates) {
+                if (i >= num) {
+                    for (List<Integer> prev : dp[i - num]) {
+                        if (prev.isEmpty() || num >= prev.get(prev.size() - 1)) {
+                            List<Integer> combination = new ArrayList<>(prev);
+                            combination.add(num);
+                            dp[i].add(combination);
+                        }
+                    }
+                }
+            }
+        }
+        return dp[target];
+    }
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of candidates: ");
+        int n = scanner.nextInt();
+        int[] candidates = new int[n];
+        System.out.println("Enter the candidates:");
+        for (int i = 0; i < n; i++) {
+            candidates[i] = scanner.nextInt();
+        }
+        System.out.print("Enter the target sum: ");
+        int target = scanner.nextInt();
+        Solution solution = new Solution();
+        System.out.println("Combinations that sum up to " + target + ":");
+        System.out.println(solution.combinationSum(candidates, target));
+        scanner.close();
+    }
+}
